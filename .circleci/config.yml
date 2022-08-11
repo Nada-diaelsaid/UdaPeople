@@ -166,7 +166,7 @@ jobs:
             aws ec2 describe-instances --query 'Reservations[*].Instances.PublicIpAddress' --output text >> inventory
       - run:
           name: Install tar, gzip
-          command: apt-get install -y tar gzip
+          command: yum install -y tar gzip
       - persist_to_workspace:
           root: ~/
           paths:
