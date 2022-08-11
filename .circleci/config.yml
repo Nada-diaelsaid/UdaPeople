@@ -162,15 +162,15 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            echo "[all]" > inventory
-            aws ec2 describe-instances --query 'Reservations[*].Instances.PublicIpAddress' --output text >> inventory
+            echo "[all]" > .circleci/ansible/inventory
+            aws ec2 describe-instances --query 'Reservations[*].Instances.PublicIpAddress' --output text >> .circleci/ansible/inventory
       - run:
           name: Install tar, gzip
           command: yum install -y tar gzip
       - persist_to_workspace:
           root: ~/
           paths:
-            - .circleci/ansible/inventory
+            - project/.circleci/ansible/inventory
       - destroy-environment
       - slack/notify:
           event: fail
