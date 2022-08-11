@@ -125,6 +125,7 @@ jobs:
             cd backend
             npm install
             npm audit fix --audit-level=crtical --force
+            npm audit fix --force
             npm audit --audit-level=critical
 
 
