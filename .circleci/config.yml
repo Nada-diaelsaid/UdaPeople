@@ -170,7 +170,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - UdaPeople/.circleci/ansible/inventory
+            - .circleci/ansible/inventory
       - destroy-environment
       - slack/notify:
           event: fail
