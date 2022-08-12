@@ -279,20 +279,19 @@ jobs:
       - restore_cache:
           keys: [backend-build]
       - run:
-          name: backend artifacts
+          name: backend artifact
           command: |
             cd backend
-            npm i
+            # npm i
             npm run build
-            cd ..
-            tar -C backend -czvf artifacts.tar.gz .
-            cd .circleci/ansible
-            echo "Content of inventory"
-            cat inventory
+            tar -czvf artifact.tar.gz dist/* packages/*
+            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
       - run:
           name: Deploy backend
           command: |
             cd .circleci/ansible
+            echo "-----Content of inventory------"
+            cat inventory
             ansible-playbook -i inventory deploy-backend.yml
       - destroy-environment
       - revert-migrations
