@@ -4,7 +4,7 @@
     path: ~/backend-app
     state: directory
 
-- name: "Extract backend artifacts"
+- name: "Extract backend artifact"
   unarchive:
     src: artifact.tar.gz
     dest: ~/backend-app
