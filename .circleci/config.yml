@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.10.1
   aws-cli: circleci/aws-cli@3.1
+  ansible: orbss/ansible-playbook@0.0.5
 
 defaults: &defaults
   docker:
@@ -21,7 +22,7 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.WORKFLOW_ID >>
-            # aws s3 rm s3://udapeople-<< parameters.WORKFLOW_ID >> --recursive
+            aws s3 rm s3://udapeople-<< parameters.WORKFLOW_ID >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.WORKFLOW_ID >>
 
   revert-migrations:
@@ -254,13 +255,11 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: cimg/base:stable
     steps:
       - checkout
       - aws-cli/install
-      - run:
-          name: Install Ansible
-          command: apk add --update ansible
+      - ansible/install
       - run:
           name: Install NodeJS 13
           command: |
@@ -285,9 +284,9 @@ jobs:
             cd .circleci/ansible
             echo "Content of inventory"
             cat inventory
-      - run:
-          name: Deploy backend
-          command: ansible-playbook -i inventory deploy-backend.yml
+      - ansible/playbook:
+          playbook: .circleci/ansible/deploy-backend.yml
+          inventory: .circleci/ansible/inventory
       - destroy-environment
       - revert-migrations
 
@@ -352,31 +351,31 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-          context: slack-udapeople
-      - scan-frontend:
-          requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [master]
-          context: slack-udapeople
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      #     context: slack-udapeople
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      # - deploy-infrastructure:
+      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      #     filters:
+      #       branches:
+      #         only: [master]
+      #     context: slack-udapeople
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
+      - deploy-backend
+          # requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
