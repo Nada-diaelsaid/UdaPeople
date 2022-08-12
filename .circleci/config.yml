@@ -284,13 +284,12 @@ jobs:
             cd backend
             # npm i
             npm run build
-            tar -czvf artifact.tar.gz dist/* packages/*
-            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+            tar -czvf artifact.tar.gz dist/* package*
+            cp artifact.tar.gz ../.circleci/ansible/roles/deploy/files
       - run:
           name: Deploy backend
           command: |
             cd .circleci/ansible
-            echo "-----Content of inventory------"
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml
       - destroy-environment
