@@ -196,7 +196,7 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - awscli
+      # - awscli
       - add_ssh_keys:
           fingerprints: ["55:a2:d5:58:77:81:3e:49:2b:97:49:a0:c0:7d:93:cd"]
       - attach_workspace:
@@ -217,7 +217,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - awscli
+      # - awscli
       - run:
           name: Run migrations
           command: |
