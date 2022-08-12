@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@4.10.1
+  aws-cli: circleci/aws-cli@3.1
 
 defaults: &defaults
   docker:
@@ -20,7 +21,7 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.WORKFLOW_ID >>
-            aws s3 rm s3://udapeople-<< parameters.WORKFLOW_ID >> --recursive
+            # aws s3 rm s3://udapeople-<< parameters.WORKFLOW_ID >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.WORKFLOW_ID >>
 
   awscli:
@@ -47,7 +48,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS = $(curl --insecure https://kvdb.io/WxouXX1QcwP4pWs75UUT6v/migrations_<< parameters.WORKFLOW_ID >>)
+            SUCCESS=$(curl --insecure https://kvdb.io/WxouXX1QcwP4pWs75UUT6v/migrations_<< parameters.WORKFLOW_ID >>)
             if(( $SUCCESS==1 ));
             then
               cd ~/project/backend
@@ -217,7 +218,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      # - awscli
+      - aws-cli/install
       - run:
           name: Run migrations
           command: |
@@ -237,16 +238,16 @@ jobs:
       - revert-migrations
 
   deploy-frontend:
-    docker:
-      - image: amazon/aws-cli
+    <<: *defaults 
     steps:
-      - checkout 
+      - checkout
+      - run: aws-cli/install
       - run:
           name: Install dependencies
           command: |
             yum install -y tar
             curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-            sudo apt install -y nodejs
+            apt install -y nodejs
       - run:
           name: Get backend url
           command: |
