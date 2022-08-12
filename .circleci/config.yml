@@ -285,11 +285,9 @@ jobs:
             cd .circleci/ansible
             echo "Content of inventory"
             cat inventory
-            ansible-playbook -i inventory deploy-backend.yml
       - run:
           name: Deploy backend
-          command: |
-            
+          command: ansible-playbook -i inventory deploy-backend.yml
       - destroy-environment
       - revert-migrations
 
