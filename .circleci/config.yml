@@ -280,7 +280,7 @@ jobs:
           keys: [backend-build]
       - run:
           name: backend artifacts
-          command:
+          command: |
             cd backend
             npm i
             npm run build
