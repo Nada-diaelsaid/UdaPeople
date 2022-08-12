@@ -12,10 +12,10 @@
 - name: "Start backend app"
   shell: |
       cd ~/backend-app
-      npm i
+      npm install
       cd dist
       pm2 stop default
-      pm2 start main.js
+      pm2 start npm -- start 
   environment:
     # Get the environment variables from CircleCI and add to the EC2 instance
     ENVIRONMENT: production
