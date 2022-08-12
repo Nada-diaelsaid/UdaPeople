@@ -259,7 +259,13 @@ jobs:
     steps:
       - checkout
       - aws-cli/install
-      - ansible/install
+      - run:
+          name: Install Ansible
+          command: |
+            sudo apt update
+            sudo apt install software-properties-common
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudp apt install ansible
       - run:
           name: Install NodeJS 13
           command: |
@@ -284,9 +290,9 @@ jobs:
             cd .circleci/ansible
             echo "Content of inventory"
             cat inventory
-      - ansible/playbook:
-          playbook: .circleci/ansible/deploy-backend.yml
-          inventory: .circleci/ansible/inventory
+      - run:
+          name: Deploy backend
+          command: ansible-playbook -i inventory deploy-backend.yml
       - destroy-environment
       - revert-migrations
 
