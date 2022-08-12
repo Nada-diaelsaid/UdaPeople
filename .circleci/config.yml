@@ -241,7 +241,7 @@ jobs:
     <<: *defaults 
     steps:
       - checkout
-      - run: aws-cli/install
+      - aws-cli/install
       - run:
           name: Install dependencies
           command: |
