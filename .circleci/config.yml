@@ -252,22 +252,46 @@ jobs:
       - destroy-environment
       - revert-migrations
 
-#   deploy-backend:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Deploy backend
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - aws-cli/install
+      - run:
+          name: Install Ansible
+          command: apk add --update ansible
+      - run:
+          name: Install NodeJS 13
+          command: |
+            curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            cd backend
+            npm install
+      - add_ssh_keys:
+          fingerprints: ["55:a2:d5:58:77:81:3e:49:2b:97:49:a0:c0:7d:93:cd"]
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: backend artifacts
+          command:
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            tar -C backend -czvf artifacts.tar.gz .
+            cd .circleci/ansible
+            echo "Content of inventory"
+            cat inventory
+            ansible-playbook -i inventory deploy-backend.yml
+      - run:
+          name: Deploy backend
+          command: |
+            
+      - destroy-environment
+      - revert-migrations
 
 #   smoke-test:
 #     docker:
