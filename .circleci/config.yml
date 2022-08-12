@@ -245,6 +245,8 @@ jobs:
           name: Install dependencies
           command: |
             yum install -y tar
+            curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+            sudo apt install -y nodejs
       - run:
           name: Get backend url
           command: |
