@@ -29,12 +29,12 @@ commands:
       - run:
           name: awscli
           command: |
-            sudo apt update
-            sudo apt upgrade
-            sudo apt install curl
+            apt update
+            apt upgrade
+            apt install curl
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
-            sudo ./aws/install
+            ./aws/install
 
   # revert-migrations:
   #   description: Revert the last migration if successfully run in the current workflow.
