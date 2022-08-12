@@ -38,4 +38,3 @@
 
   roles:
     - configure-server
-    - deploy
