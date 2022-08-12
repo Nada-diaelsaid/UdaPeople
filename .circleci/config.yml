@@ -291,7 +291,9 @@ jobs:
             cat inventory
       - run:
           name: Deploy backend
-          command: ansible-playbook -i inventory deploy-backend.yml
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory deploy-backend.yml
       - destroy-environment
       - revert-migrations
 
