@@ -355,7 +355,7 @@ jobs:
       - destroy-environment
       - revert-migrations
 
-cleanup:
+  cleanup:
     docker:
       - image: circleci/aws-cli
     steps:
