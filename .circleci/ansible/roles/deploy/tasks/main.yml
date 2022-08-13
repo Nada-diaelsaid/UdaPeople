@@ -27,8 +27,8 @@
     TYPEORM_MIGRATIONS: "./migrations/*.ts"
     TYPEORM_MIGRATIONS_DIR: "./migrations"
   shell: |
-      echo $TYPEORM_ENTITIES
-      echo $TYPEORM_HOST
-      npm install
-      pm2 stop default
-      pm2 start main.js
+    echo $TYPEORM_ENTITIES
+    echo $TYPEORM_HOST
+    npm i
+    pm2 stop default
+    pm2 start main.js
