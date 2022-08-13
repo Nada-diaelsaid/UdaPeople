@@ -22,6 +22,7 @@ commands:
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.WORKFLOW_ID >>
             aws s3 rm s3://udapeople-<< parameters.WORKFLOW_ID >> --recursive
+            aws s3api delete-bucket --bucket udapeople-<< parameters.WORKFLOW_ID >> --region us-east-1
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.WORKFLOW_ID >>
 
   revert-migrations:
@@ -329,7 +330,7 @@ jobs:
             echo $URL
             if curl -s ${URL} | grep "Welcome"
             then
-              exit 0
+              exit 1
             else
               exit 1
             fi
