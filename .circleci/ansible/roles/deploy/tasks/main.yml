@@ -12,7 +12,7 @@
 - name: "Start backend app"
   args:
     chdir: ~/backend-app/dist
-    environment:
+  environment:
     # Get the environment variables from CircleCI and add to the EC2 instance
     ENVIRONMENT: production
     NODE_ENV: production
