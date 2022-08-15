@@ -10,8 +10,6 @@
     dest: ~/backend-app
 
 - name: "Start backend app"
-  command:
-    pm2 start main.js
   args:
     chdir: ~/backend-app/dist
   environment:
