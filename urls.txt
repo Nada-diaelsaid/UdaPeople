@@ -1,5 +1,5 @@
 [URL01] https://github.com/Nada-diaelsaid/UdaPeople
-[URL02] http://udapeople-480b6ab.s3-website-us-east-1.amazonaws.com
-[URL03] http://d3vpu0rurhle2o.cloudfront.net
-[URL04] http://54.227.173.101:3030/api/status
+[URL02] http://udapeople-0af0294.s3-website-us-east-1.amazonaws.com
+[URL03] http://d1obu6mzm57p3j.cloudfront.net
+[URL04] http://34.230.18.109:3030/api/status
 [URL05] 3.83.82.173:9090
